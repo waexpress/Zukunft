@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widget xmlns     = "http://www.w3.org/ns/widgets"
+        xmlns:gap = "http://phonegap.com/ns/1.0"
+        id        = "de.wa_express.www"
+        version   = "1.0.3">
+    <name>WBG Zukunft</name>
+
+    <description>
+        Die WBG Zukunft eG ist Ihr Partner für gutes, sicheres und preiswertes Wohnen in Erfurt.
+Mit dieser App haben Sie Zugriff auf Kontakte, Services, aktuelle Informationen und Bereitschaftsdienste unserer Genossenschaft.
+    </description>
+
+    <author href="http://www.wa-express.de" email="kontakt@wa-express.de">
+        WA Express
+    </author>
+
+    <feature name="http://api.phonegap.com/1.0/device" />
+	<feature name="http://api.phonegap.com/1.0/geolocation" />
+
+    <preference name="phonegap-version" value="2.0.0" />
+    <preference name="orientation"      value="portrait" />
+    <preference name="target-device"    value="handset" />
+    <preference name="fullscreen"       value="false" />
+
+    <icon src="icon.png" />
+    
+    <icon src="icons/57.png"            gap:platform="ios"        width="57" height="57" />
+    <icon src="icons/72.png"            gap:platform="ios"        width="72" height="72" />
+    <icon src="icons/114.png"         gap:platform="ios"        width="114" height="114" />
+    <icon src="icons/144.png"         gap:platform="ios"        width="144" height="144" />
+	
+	<gap:splash src="icons/320_480.png" width="320" height="480" />
+	<gap:splash src="icons/640_960.png" width="640" height="960" />
+	<gap:splash src="icons/640_1136.png" width="640" height="1136" />
+	
+	<access origin="*" />
+</widget>

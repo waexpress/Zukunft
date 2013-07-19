@@ -1,0 +1,125 @@
+<!DOCTYPE html> 
+<html>
+<head>
+<meta charset="UTF-8">
+<title>jQuery Mobile-Webanwendung</title>
+<link href="jquery.mobile-1.0a3.min.css" rel="stylesheet" type="text/css"/>
+
+<script src="jquery.mobile-1.0a3.min.js" type="text/javascript"></script>
+<script src="/phonegap.js" type="text/javascript"></script>
+
+<script src="http://www.google.com/jsapi?key=AIzaSyAPEMcihOwANhwOTYATloJCchwiiaFvMoM" type="text/javascript"></script>
+<script type="text/javascript">
+	google.load("maps", "3", {'other_params':'sensor=true'});
+	google.load("jquery", "1.6.1");
+</script>
+<script src="jquery.mobile-1.0a3.min.js"></script>
+<script type="text/javascript" src="jquery.ui.map.js"></script>
+
+
+
+</head> 
+<body> 
+
+
+<div data-role="page" id="gmap-3"> 
+<div data-role="header">
+<a data-role="button" a href="aktuelles.html" rel="external">Back</a>
+<h1>&nbsp;</h1></div>
+
+<script type="text/javascript">
+
+
+var myLat=0;
+var myLon=0;
+
+function my_location(){
+				
+	  // Try W3C Geolocation (Preferred)
+	  if(navigator.geolocation) {
+		navigator.geolocation.getCurrentPosition(function(position) {
+			draw_directions(position);			
+		}, function() {
+			alert('Sorry, cannot get your current location');
+		});
+	  // Try Google Gears Geolocation
+	  } else if (google.gears) {
+		var geo = google.gears.factory.create('beta.geolocation');
+		geo.getCurrentPosition(function(position) {
+			draw_directions(position);			
+		}, function() {
+			alert('Sorry, cannot get your current location');
+		});
+	  // Browser doesn't support Geolocation
+	  } else {
+		alert('Sorry, cannot get your current location');
+	  }				
+}
+
+function draw_directions(position){
+	
+	if (position.coords){
+		myLat=position.coords.latitude;
+		myLon=position.coords.longitude;
+	} else {
+		myLat=position.latitude;
+		myLon=position.longitude;
+	}
+	
+	$("#from").val(myLat+','+myLon)
+	
+	//create path to venue
+	$('#map_canvas_1').gmap('displayDirections', { 'origin': $('#from').val(), 'destination': $('#to').val(), 'travelMode': google.maps.DirectionsTravelMode.DRIVING }, { 'panel': document.getElementById('directions')}, function(success, response) {
+		if ( success ) {
+			$('#results').show();
+		} else {
+			$('#map_canvas_1').gmap('clear');
+			$('#results').hide();
+			alert('Sorry, could not calculate directions');
+		}
+	});
+}
+	
+//load initial position	
+$('#gmap-3').live("pageshow", function() {
+	geocoder = new google.maps.Geocoder();
+	var address = document.getElementById("to").value;
+	geocoder.geocode( { 'address': address}, function(results, status) {
+	  if (status == google.maps.GeocoderStatus.OK) {
+		$('#map_canvas_1').gmap({'center': results[0].geometry.location,'zoom': 16});
+		$('#map_canvas_1').gmap('addMarker',{'position':results[0].geometry.location});
+	  }
+	});
+});
+
+
+// To stop the click from looping into nonsense
+$('#gmap-3').live("pagecreate", function() {
+	$('#submit').click(function() {
+		//get current latlng using GPS
+		my_location()
+		return false;
+	});
+});
+
+</script>
+
+<div id="map_canvas_1" style="height:300px;"></div>
+<div align="center">
+  <input id="to" value="Moskauer Platz, Erfurt" type="hidden"/>
+  <input id="from"  type="hidden" value=""/>
+<a id="submit" href="#" data-role="button" data-icon="search">Show directions</a>
+  
+</div>
+<div id="results" class="ui-listview ui-listview-inset ui-corner-all ui-shadow" style="display:none;padding:10px;">
+  <div class="ui-li ui-li-divider ui-btn ui-bar-b ui-corner-top ui-btn-up-undefined">Results</div>
+<div id="directions"></div>
+</div>
+</div>
+
+
+</div>
+</div>
+
+</body>
+</html>
